@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'Questions.dart';
 
 void main() => runApp(Quizzler());
 
@@ -27,14 +28,15 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Widget> ScoreKeeper = [
-  ];
-  List<String> Questions=[
-    'Is Lee Sian Long is the Singapore PM',
-    'Is Narendra Modi is the India PM',
-    'Is Edappadi Palanisamy is the CM of Andra',
-  ];
+
+  List<Questions> Questionbank=[Questions(q:'Is Lee Sian Long is the Singapore PM',a:true),
+    Questions(q:'Is Narendra Modi is the India PM',a:true),
+    Questions(q:'Is Edappadi Palanisamy is the CM of Andra',a:false)];
+
+  List<Icon> ScoreKeeper=[];
+
   int Questionnumber=0;
+  bool boolAnswer=false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +50,7 @@ class _QuizPageState extends State<QuizPage> {
               padding: EdgeInsets.all(15.0),
               child: Center(
                   child: Text(
-                Questions[Questionnumber],
+                Questionbank[Questionnumber].Question,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               )),
             ),
@@ -63,13 +65,13 @@ class _QuizPageState extends State<QuizPage> {
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
                 onPressed: () {
-                 setState(() {
-                   Questionnumber++;
-                   print(Questionnumber);
-                   ScoreKeeper.add(  Icon(
-                     Icons.check,color: Colors.green,
-                   ));
-                 });
+                  setState(() {
+                    bool Correctanswer=Questionbank[Questionnumber].Answer;
+                    ScoreKeeper.add(CreateIcons(true, Correctanswer));
+                    IncrementQuestionNumber();
+                    print(Questionnumber);
+
+                  });
                 },
               ),
             ),
@@ -87,15 +89,13 @@ class _QuizPageState extends State<QuizPage> {
                   ),
                 ),
                 onPressed: () {
-                 setState(() {
-                   
-                   Questionnumber++;
-                   print(Questionnumber);
-                   ScoreKeeper.add(  Icon(
-                     Icons.close,color: Colors.red,
-                   ));
+                  setState(() {
+                    bool Correctanswer=Questionbank[Questionnumber].Answer;
+                    ScoreKeeper.add(CreateIcons(false, Correctanswer));
+                    IncrementQuestionNumber();
+                    print(Questionnumber);
 
-                 });
+                  });
                 },
               ),
             ),
@@ -108,4 +108,32 @@ class _QuizPageState extends State<QuizPage> {
       ),
     );
   }
+
+  void IncrementQuestionNumber()
+  {
+     if(Questionnumber==(Questionbank.length-1))
+      {
+        Questionnumber=0;
+
+
+      }else
+        {
+          Questionnumber++;
+        }
+  }
+  Icon CreateIcons(bool Pressedstate, bool Correct)
+  {
+    if(Pressedstate==Correct)
+      {
+        return Icon(
+          Icons.check,color: Colors.green,
+        );
+      }
+    else{
+      return Icon(
+          Icons.close,color: Colors.red,
+      );
+    }
+  }
+
 }
