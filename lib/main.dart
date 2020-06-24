@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quizzler/Quizbrain.dart';
 import 'Questions.dart';
 
 void main() => runApp(Quizzler());
@@ -29,13 +30,10 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
 
-  List<Questions> Questionbank=[Questions(q:'Is Lee Sian Long is the Singapore PM',a:true),
-    Questions(q:'Is Narendra Modi is the India PM',a:true),
-    Questions(q:'Is Edappadi Palanisamy is the CM of Andra',a:false)];
-
+  Quizbrain quizbrain=new Quizbrain();
   List<Icon> ScoreKeeper=[];
 
-  int Questionnumber=0;
+
   bool boolAnswer=false;
   @override
   Widget build(BuildContext context) {
@@ -50,7 +48,7 @@ class _QuizPageState extends State<QuizPage> {
               padding: EdgeInsets.all(15.0),
               child: Center(
                   child: Text(
-                Questionbank[Questionnumber].Question,
+                    quizbrain. GetquestionText(),
                 style: TextStyle(fontSize: 20, color: Colors.white),
               )),
             ),
@@ -66,10 +64,10 @@ class _QuizPageState extends State<QuizPage> {
                 ),
                 onPressed: () {
                   setState(() {
-                    bool Correctanswer=Questionbank[Questionnumber].Answer;
+                    bool Correctanswer=quizbrain.GetAnswerforQuestion();
                     ScoreKeeper.add(CreateIcons(true, Correctanswer));
-                    IncrementQuestionNumber();
-                    print(Questionnumber);
+quizbrain.GetNextQuestion();
+                   // print(Questionnumber);
 
                   });
                 },
@@ -90,10 +88,10 @@ class _QuizPageState extends State<QuizPage> {
                 ),
                 onPressed: () {
                   setState(() {
-                    bool Correctanswer=Questionbank[Questionnumber].Answer;
+                    bool Correctanswer=quizbrain.GetAnswerforQuestion();
                     ScoreKeeper.add(CreateIcons(false, Correctanswer));
-                    IncrementQuestionNumber();
-                    print(Questionnumber);
+                    quizbrain.GetNextQuestion();
+                    //print(Questionnumber);
 
                   });
                 },
@@ -109,18 +107,7 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  void IncrementQuestionNumber()
-  {
-     if(Questionnumber==(Questionbank.length-1))
-      {
-        Questionnumber=0;
 
-
-      }else
-        {
-          Questionnumber++;
-        }
-  }
   Icon CreateIcons(bool Pressedstate, bool Correct)
   {
     if(Pressedstate==Correct)
