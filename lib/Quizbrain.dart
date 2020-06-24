@@ -14,6 +14,14 @@ class Quizbrain
       }
 
   }
+  bool IsQuestionsExist()
+  {
+   return (_questions==(Questionbank.length-1));
+  }
+  void ResetQuestions()
+  {
+    _questions=0;
+  }
   String GetquestionText()
   {
     return Questionbank[_questions].Question;

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizzler/Quizbrain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'Questions.dart';
 
 void main() => runApp(Quizzler());
@@ -63,13 +64,9 @@ class _QuizPageState extends State<QuizPage> {
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
                 onPressed: () {
-                  setState(() {
-                    bool Correctanswer=quizbrain.GetAnswerforQuestion();
-                    ScoreKeeper.add(CreateIcons(true, Correctanswer));
-quizbrain.GetNextQuestion();
-                   // print(Questionnumber);
+                  CreateIcons(true);
 
-                  });
+
                 },
               ),
             ),
@@ -87,13 +84,9 @@ quizbrain.GetNextQuestion();
                   ),
                 ),
                 onPressed: () {
-                  setState(() {
-                    bool Correctanswer=quizbrain.GetAnswerforQuestion();
-                    ScoreKeeper.add(CreateIcons(false, Correctanswer));
-                    quizbrain.GetNextQuestion();
-                    //print(Questionnumber);
+                  CreateIcons(false);
 
-                  });
+
                 },
               ),
             ),
@@ -108,19 +101,35 @@ quizbrain.GetNextQuestion();
   }
 
 
-  Icon CreateIcons(bool Pressedstate, bool Correct)
+  void CreateIcons(bool Pressedstate)
   {
-    if(Pressedstate==Correct)
+    setState(() {
+    bool Correctanswer=quizbrain.GetAnswerforQuestion();
+
+    if(Pressedstate==Correctanswer)
       {
-        return Icon(
+        ScoreKeeper.add(Icon(
           Icons.check,color: Colors.green,
-        );
+        ));
       }
     else{
-      return Icon(
+      ScoreKeeper.add(Icon(
           Icons.close,color: Colors.red,
-      );
+      ));
     }
-  }
+    if(quizbrain.IsQuestionsExist())
+    {
+      Alert(
+          context: context,
+          title: "Quizz Apps",
+          desc: "Thanks for your Answer.")
+          .show();
+      ScoreKeeper.clear();
+      quizbrain.ResetQuestions();
+    }
+    else{
+    quizbrain.GetNextQuestion();}
+    });
+}
 
 }
