@@ -2,9 +2,9 @@ import 'questions.dart';
 class Quizbrain
 {
   int _questions=0;
-  List<Questions> Questionbank=[Questions(q:'Is Lee Sian Long is the Singapore PM',a:true),
-    Questions(q:'Is Narendra Modi is the India PM',a:true),
-    Questions(q:'Is Edappadi Palanisamy is the CM of Andra',a:false)];
+  List<Questions> Questionbank=[Questions('Is Lee Sian Long is the Singapore PM',true),
+    Questions('Is Narendra Modi is the India PM',true),
+    Questions('Is Edappadi Palanisamy is the CM of Andra',false)];
 
   void GetNextQuestion()
   {
